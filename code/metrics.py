@@ -1,10 +1,30 @@
 import numpy as np
 
 def confusion_matrix(actual, predictions):
+
+
+    actual = 1*actual
+    predictions = 1*predictions
+    confusion_matrix = np.array([[0,0], [0,0]])
+    for i in range(np.size(actual, 0)):
+        confusion_matrix[int(actual[i]), int(predictions[i])] = confusion_matrix[int(actual[i]), int(predictions[i])]+1
+
+    return confusion_matrix
+
+    '''
+    temp = confusion_matrix[0,0]
+    confusion_matrix[0,0] = confusion_matrix[1,0]
+    confusion_matrix[1,0] = temp
+    '''
+
+
+
     """
     Given predictions (an N-length numpy vector) and actual labels (an N-length 
     numpy vector), compute the confusion matrix. The confusion 
     matrix for a binary classifier would be a 2x2 matrix as follows:
+
+
 
     [
         [true_negatives, false_positives],
@@ -28,9 +48,17 @@ def confusion_matrix(actual, predictions):
     if predictions.shape[0] != actual.shape[0]:
         raise ValueError("predictions and actual must be the same length!")
     
-    raise NotImplementedError()
+    #raise NotImplementedError()
 
 def accuracy(actual, predictions):
+    cm = confusion_matrix(actual, predictions)
+    accuracy = (cm[0,0] + cm[1,1])/np.sum(cm)
+    return accuracy
+
+
+
+
+
     """
     Given predictions (an N-length numpy vector) and actual labels (an N-length 
     numpy vector), compute the accuracy:
@@ -47,9 +75,14 @@ def accuracy(actual, predictions):
     if predictions.shape[0] != actual.shape[0]:
         raise ValueError("predictions and actual must be the same length!")
 
-    raise NotImplementedError()
+    #raise NotImplementedError()
 
 def precision_and_recall(actual, predictions):
+    cm = confusion_matrix(actual, predictions)
+    precision = cm[1,1]/(cm[0,1] + cm[1,1])
+    recall = cm[1,1]/(cm[1,0] + cm[1,1])
+    return precision, recall
+
     """
     Given predictions (an N-length numpy vector) and actual labels (an N-length 
     numpy vector), compute the precision and recall:
@@ -69,9 +102,14 @@ def precision_and_recall(actual, predictions):
     if predictions.shape[0] != actual.shape[0]:
         raise ValueError("predictions and actual must be the same length!")
 
-    raise NotImplementedError()
+    #raise NotImplementedError()
 
 def f1_measure(actual, predictions):
+
+    _precision, _recall = precision_and_recall(actual, predictions)
+    f1_measure = 2 * _precision*_recall/ (_precision + _recall)
+    return f1_measure
+
     """
     Given predictions (an N-length numpy vector) and actual labels (an N-length 
     numpy vector), compute the F1-measure:
@@ -91,5 +129,5 @@ def f1_measure(actual, predictions):
     if predictions.shape[0] != actual.shape[0]:
         raise ValueError("predictions and actual must be the same length!")
 
-    raise NotImplementedError()
+    #raise NotImplementedError()
 

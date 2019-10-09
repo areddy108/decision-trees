@@ -11,6 +11,12 @@ class PriorProbability():
         self.most_common_class = None
 
     def fit(self, features, targets):
+
+        counts = np.bincount(targets.astype(int))
+        self.most_common_class = np.argmax(counts)
+
+
+
         """
         Implement a classifier that works by prior probability. Takes in features
         and targets and fits the features to the targets using prior probability.
@@ -22,9 +28,13 @@ class PriorProbability():
                 examples.
         """
 
-        raise NotImplementedError()
+        #raise NotImplementedError()
 
     def predict(self, data):
+
+        prediction = np.zeros([np.size(data, 0) , 1 ])
+        prediction = prediction + self.most_common_class
+        return prediction.squeeze()
         """
         Takes in features as a numpy array and predicts classes for each point using
         the trained model.
@@ -35,4 +45,4 @@ class PriorProbability():
         """
 
         
-        raise NotImplementedError()
+        #raise NotImplementedError()

@@ -19,7 +19,7 @@ def test_experiment_run_decision_tree():
     for data_path in datasets:
         learner_type = 'decision_tree'
         confusion_matrix, accuracy, precision, recall, f1_measure = (
-            run(data_path, learner_type, 1.0)
+            run(data_path, learner_type, 1)
         )
         accuracies[data_path] = accuracy
     accuracy_goals = {
@@ -41,6 +41,7 @@ def test_experiment_run_prior_probability():
         accuracies[data_path] = accuracy
     dataset = xp_dataset_name('ivy-league.csv')
     assert (accuracies[dataset] > .2)
+
 
 def test_experiment_run_and_compare():
     for data_path in datasets:

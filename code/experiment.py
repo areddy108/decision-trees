@@ -1,9 +1,37 @@
 from .decision_tree import DecisionTree
+from .decision_tree import Tree
 from .prior_probability import PriorProbability
 from .metrics import precision_and_recall, confusion_matrix, f1_measure, accuracy
 from .data import load_data, train_test_split
 
 def run(data_path, learner_type, fraction):
+    features, targets, attribute_names = load_data(data_path)
+    train_features, train_targets, test_features, test_targets = train_test_split(features, targets, fraction)
+    if('decision_tree' == learner_type):
+        dt = DecisionTree(attribute_names)
+        dt.tree = Tree()
+        dt = dt.fit(train_features, train_targets)
+        predictions = dt.predict(test_features)
+        cm = confusion_matrix(test_targets, predictions)
+        a = accuracy(test_targets, predictions)
+        p, r = precision_and_recall(test_targets, predictions)
+        f1 = f1_measure(test_targets, predictions)
+        dt.visualize(branch = None, level = 0)
+        return cm, a, p, r, f1
+    if('prior_probability' == learner_type):
+        pp = PriorProbability()
+        pp.fit(train_features, train_targets)
+        predictions = pp.predict(test_features)
+        cm = confusion_matrix(test_targets, predictions)
+        a = accuracy(test_targets, predictions)
+        p, r = precision_and_recall(test_targets, predictions)
+        f1 = f1_measure(test_targets, predictions)
+        return cm, a, p, r, f1
+
+
+
+
+
     """
     This function walks through an entire machine learning workflow as follows:
 
@@ -42,7 +70,9 @@ def run(data_path, learner_type, fraction):
         f1_measure (np.float): F1 Measure on testing examples using learner
     """
 
-    raise NotImplementedError()
+    #raise NotImplementedError()
 
     # Order of these returns must be maintained
-    return confusion_matrix, accuracy, precision, recall, f1_measure
+
+
+

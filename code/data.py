@@ -1,8 +1,17 @@
-import numpy as np 
+import numpy as np
 import os
 import csv
 
 def load_data(data_path):
+
+    data = np.genfromtxt(data_path, delimiter = ',', skip_header = 1)
+    attribute_names = np.genfromtxt(data_path, delimiter =',', max_rows = 1, dtype = str).tolist()
+    attribute_names = attribute_names[:-1]
+    features = data[:, :-1]
+    #print(features)
+    targets = data[:, -1 ]
+    return features, targets, attribute_names
+
     """
     Associated test case: tests/test_data.py
 
@@ -49,10 +58,26 @@ def load_data(data_path):
     """
 
     # Implement this function and remove the line that raises the error after.
-    raise NotImplementedError()
+    #raise NotImplementedError()
 
 def train_test_split(features, targets, fraction):
+
+    if(fraction == 1):
+        return features, targets, features, targets
+    else:
+        num = int( fraction * np.size(features, 0));
+        tempF = features
+        tempT = targets
+        np.append(tempF, tempT.reshape(-1,1), axis = 1)
+        np.random.shuffle(tempF, );
+        train_features = tempF[:num, :-1]
+        train_targets = tempF[:num, -1]
+        test_features = tempF[num:, :-1]
+        test_targets = tempF[num:, -1]
+        return train_features, train_targets, test_features, test_targets
+
     """
+
     Split features and targets into training and testing, randomly. N points from the data 
     sampled for training and (features.shape[0] - N) points for testing. Where N:
 
@@ -75,4 +100,4 @@ def train_test_split(features, targets, fraction):
     if (fraction > 1.0):
         raise ValueError('N cannot be bigger than number of examples!')
 
-    raise NotImplementedError()
+    #raise NotImplementedError()
